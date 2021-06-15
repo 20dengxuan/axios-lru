@@ -1,8 +1,26 @@
 <template>
-  <router-view />
+  <div>
+    <div class="top"></div>
+    <router-view />
+    <nav-bar></nav-bar>
+  </div>
 </template>
 
+<script>
+import NavBar from "@/components/Navbar";
+export default {
+  components: {
+    NavBar,
+  },
+};
+</script>
 <style lang="less">
+* {
+  box-sizing: border-box;
+}
+.top {
+  height: 45px;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

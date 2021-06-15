@@ -2,15 +2,14 @@ import axios from "axios";
 import api from "./api";
 import lruCache from "lru-cache";
 import { getSessionStorage, setSessionStorage } from "../utils/storage";
+import router from "../router";
+import store from "../store";
 
 // 请求拦截
 axios.interceptors.request.use(
   (config) => {
-    if (getSessionStorage("LOGIN")) {
-      config.headers.Authorization =
-        getSessionStorage("LOGIN").data.token_type +
-        " " +
-        getSessionStorage("LOGIN").data.access_token;
+    if (store.state.user.token !== "" && store.state.user.token) {
+      config.headers.Authorization = store.state.user.token;
     }
     return config;
   },
@@ -20,9 +19,24 @@ axios.interceptors.request.use(
 );
 
 // 响应拦截
-axios.interceptors.response.use((response) => {
-  return response;
-});
+axios.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    console.log(error.response);
+    if (error.response) {
+      switch (error.response.status) {
+        case 401:
+          console.log(router);
+          router.replace({
+            path: "login",
+          });
+      }
+    }
+    return Promise.reject(error.response.data);
+  }
+);
 
 const cacheObj = new lruCache({
   max: 10000, //缓存队列长度
@@ -33,7 +47,7 @@ const cacheObj = new lruCache({
 const setLocalCahce = (key, data, type) => {
   if (type === 1) {
     setSessionStorage(key, data);
-  } else if (!type) {
+  } else if (type === 2) {
     cacheObj.set(key, JSON.stringify(data));
   }
 };
@@ -43,7 +57,7 @@ const getLocalCahce = (key, type) => {
   let data = null;
   if (type === 1) {
     data = getSessionStorage(key);
-  } else if (cacheObj.has(key)) {
+  } else if (type === 2 && cacheObj.has(key)) {
     console.log("数据是从lru队列中来的");
     data = JSON.parse(cacheObj.get(key)) || null;
   }

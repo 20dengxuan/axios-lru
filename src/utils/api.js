@@ -12,4 +12,6 @@ export default (parmas) => ({
   getUser: () => axios.get("/api/user"),
 
   logout: () => axios.post("/api/auth/logout"),
+
+  newToken: () => axios.post("/api/auth/refresh"),
 });

@@ -1,28 +1,23 @@
 <template>
-  <div>
-    home
-    <button @click="out()">退出</button>
-  </div>
+  <div>index</div>
 </template>
 
 <script>
-import { Axios } from "../../utils/axios";
-import { useRouter } from "vue-router";
+// import {Axios} from '../../utils/axios.js'
+import { onMounted } from "vue";
+import { mapState } from "vuex";
 export default {
+  computed: {
+    ...mapState(["user"]),
+  },
   setup() {
-    const router = useRouter();
+    //  const store = useStore()
+    onMounted(async () => {
+      //  const data = await Axios({key:'getUser'})
+      //  console.log(data)
+    });
 
-    const out = async () => {
-      const logout = await Axios({ key: "logout" });
-      if (logout.status === 204) {
-        window.sessionStorage.setItem("LOGIN", "");
-        router.push({ path: "/login" });
-      }
-    };
-
-    return {
-      out,
-    };
+    return {};
   },
 };
 </script>
