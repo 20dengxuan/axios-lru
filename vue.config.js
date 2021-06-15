@@ -1,3 +1,12 @@
 module.exports = {
-  lintOnSave: false,
+  devServer: {
+    proxy: {
+      "/api": {
+        target: "https://api.shop.eduwork.cn/",
+        changeOrigin: true,
+        secure: true,
+        pathRewrite: { "^/test": "" },
+      },
+    },
+  },
 };
