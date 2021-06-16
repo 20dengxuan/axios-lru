@@ -24,11 +24,9 @@ axios.interceptors.response.use(
     return response;
   },
   (error) => {
-    console.log(error.response);
     if (error.response) {
       switch (error.response.status) {
         case 401:
-          console.log(router);
           router.replace({
             path: "login",
           });
@@ -56,6 +54,7 @@ const setLocalCahce = (key, data, type) => {
 const getLocalCahce = (key, type) => {
   let data = null;
   if (type === 1) {
+    console.log("数据是sessionStorage中来的");
     data = getSessionStorage(key);
   } else if (type === 2 && cacheObj.has(key)) {
     console.log("数据是从lru队列中来的");
@@ -70,7 +69,6 @@ const Axios = async (config, parmas) => {
 
   const caches = getLocalCahce(key.toUpperCase(), cacheType);
   if (caches) {
-    console.log("数据是sessionStorage中来的");
     return caches;
   }
 

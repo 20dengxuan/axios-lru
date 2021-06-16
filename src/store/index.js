@@ -1,9 +1,11 @@
 import { createStore } from "vuex";
-
+import { getSessionStorage } from "../utils/storage";
+let token = getSessionStorage("token");
+console.log(token);
 export default createStore({
   state: {
     user: {
-      token: "",
+      token: token || "",
     },
   },
   mutations: {

@@ -1,8 +1,8 @@
 <template>
   <div>
     <router-link to="/" tag="a">首页</router-link><br />
-    <router-link to="/" tag="a">分类</router-link><br />
-    <router-link to="/" tag="a">购物车</router-link><br />
+    <router-link to="/classification" tag="a">分类</router-link><br />
+    <router-link to="/cart" tag="a">购物车</router-link><br />
     <router-link to="/user" tag="a">我的</router-link>
   </div>
 </template>

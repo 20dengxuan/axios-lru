@@ -54,7 +54,6 @@ export default {
   components: { PageNav },
   setup() {
     const router = useRouter();
-    console.log(router);
     //注册表单
     const register = reactive({
       name: "",

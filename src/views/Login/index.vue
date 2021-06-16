@@ -35,6 +35,7 @@ import { useStore } from "vuex";
 import { useRouter, useRoute } from "vue-router";
 import api from "../../utils/api";
 import { Toast } from "vant";
+import { setSessionStorage } from "../../utils/storage";
 export default {
   components: { PageNav },
   setup() {
@@ -55,7 +56,7 @@ export default {
       if (login && login.status === 200) {
         let token = login.data.token_type + " " + login.data.access_token;
         store.dispatch("USERMESSAGE", token);
-
+        setSessionStorage("token", token);
         Toast("登录成功");
         if (route.query.redirect) {
           router.push(route.query.redirect);

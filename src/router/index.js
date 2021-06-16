@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import store from "../store";
-
+import { Toast } from "vant";
 const routes = [
   {
     path: "/",
@@ -20,14 +20,27 @@ const routes = [
     component: () => import("@/views/Login"),
   },
   {
-    path: "/logout",
-    name: "logout",
-    component: () => import("@/views/logout"),
-  },
-  {
     path: "/register",
     name: "register",
     component: () => import("@/views/Login/register"),
+  },
+  {
+    path: "/classification",
+    name: "classification",
+    component: () => import("@/views/classification"),
+  },
+  {
+    path: "/cart",
+    name: "cart",
+    component: () => import("@/views/cart"),
+    meta: {
+      requireAuth: true,
+    },
+  },
+  {
+    path: "/detail",
+    name: "detail",
+    component: () => import("@/views/detail"),
   },
 ];
 
@@ -41,6 +54,7 @@ router.beforeEach((to, from, next) => {
     if (store.state.user.token) {
       next();
     } else {
+      Toast("请登录");
       next({
         path: "/login",
         query: { redirect: to.fullPath },
