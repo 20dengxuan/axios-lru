@@ -17,6 +17,9 @@ export default {
 <style lang="less">
 * {
   box-sizing: border-box;
+  // padding:0;
+  // margin:0;
+  // text-align: left;
 }
 .top {
   height: 45px;

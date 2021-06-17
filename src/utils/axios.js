@@ -63,7 +63,7 @@ const getLocalCahce = (key, type) => {
   return data;
 };
 
-const Axios = async (config, parmas) => {
+const Axios = async (config, params) => {
   const key = config.key,
     cacheType = config.type;
 
@@ -72,7 +72,7 @@ const Axios = async (config, parmas) => {
     return caches;
   }
 
-  const result = await api(parmas)[key]();
+  const result = await api(params)[key]();
 
   if (result) {
     setLocalCahce(key.toUpperCase(), result, cacheType);

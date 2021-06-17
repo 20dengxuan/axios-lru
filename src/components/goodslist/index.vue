@@ -1,6 +1,6 @@
 <template>
   <van-list
-    offset="-60"
+    offset="-59"
     v-model="loading"
     :finished="finished"
     finished-text="没有更多了"

@@ -21,7 +21,7 @@
     <router-link to="/"
       ><span>账号管理</span><van-icon color="black" name="arrow"
     /></router-link>
-    <router-link to="/"
+    <router-link to="/address"
       ><span>地址管理</span><van-icon color="black" name="arrow"
     /></router-link>
     <router-link to="/"

@@ -42,6 +42,22 @@ const routes = [
     name: "detail",
     component: () => import("@/views/detail"),
   },
+  {
+    path: "/address",
+    name: "address",
+    component: () => import("@/views/address"),
+    meta: {
+      requireAuth: true,
+    },
+  },
+  {
+    path: "/addared",
+    name: "addared",
+    component: () => import("@/views/address/addared"),
+    meta: {
+      requireAuth: true,
+    },
+  },
 ];
 
 const router = createRouter({

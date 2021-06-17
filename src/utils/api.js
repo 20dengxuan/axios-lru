@@ -15,7 +15,14 @@ export default (params) => ({
 
   newToken: () => axios.post("/api/auth/refresh"),
 
-  // getUser: () => axios.get("/api/user"),
-
   getDetail: () => axios.get(`/api/goods/${params.id}`),
+  //购物车
+  getCarts: () => axios.get("/api/carts", { params }),
+
+  //地址
+  getAddress: () => axios.get("/api/address"),
+
+  //添加地址
+  addAddress: () =>
+    axios({ method: "post", url: "/api/address", data: params }),
 });
