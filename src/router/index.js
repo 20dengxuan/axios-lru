@@ -58,6 +58,22 @@ const routes = [
       requireAuth: true,
     },
   },
+  {
+    path: "/order",
+    name: "order",
+    component: () => import("@/views/order"),
+    meta: {
+      requireAuth: true,
+    },
+  },
+  {
+    path: "/preview",
+    name: "preview",
+    component: () => import("@/views/order/preview"),
+    meta: {
+      requireAuth: true,
+    },
+  },
 ];
 
 const router = createRouter({

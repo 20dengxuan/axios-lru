@@ -5,7 +5,7 @@
       <van-checkbox-group v-model="checked">
         <div v-for="(c, index) in carts.data" :key="index">
           <van-swipe-cell :disabled="checked.length ? true : false">
-            <van-checkbox :name="c" class="card">
+            <van-checkbox :disabled="isCheckedBox" :name="c" class="card">
               {{ c.goods.title }}</van-checkbox
             >
 
@@ -41,7 +41,12 @@
         </div>
       </van-checkbox-group>
       <div style="height: 50px"></div>
-      <van-submit-bar class="submit" :price="sum * 100" button-text="提交订单">
+      <van-submit-bar
+        class="submit"
+        @submit="onSubmit"
+        :price="sum * 100"
+        button-text="提交订单"
+      >
         <template v-slot:default>
           <van-radio @click="upChecked()" :checked="isChecked">全选</van-radio>
         </template>
@@ -60,6 +65,7 @@ import { Axios } from "../../utils/axios";
 import { ref, onMounted, watch } from "vue";
 import axios from "axios";
 import { Toast } from "vant";
+import { useRouter } from "vue-router";
 export default {
   components: {
     PageNav,
@@ -69,7 +75,9 @@ export default {
     const checked = ref([]);
     const sum = ref(0);
     const isChecked = ref(false);
+    const isCheckedBox = ref(false);
 
+    //点击全选
     const upChecked = () => {
       if (checked.value.length === carts.value.data.length) {
         isChecked.value = false;
@@ -80,30 +88,56 @@ export default {
       }
     };
 
-    watch(checked, (newVal) => {
+    watch(checked, async (newVal) => {
+      if (newVal && newVal !== []) {
+        isCheckedBox.value = true;
+        let cart_ids = newVal.map((item) => item.id);
+        await Axios({ key: "upChecked" }, { cart_ids: cart_ids });
+        isCheckedBox.value = false;
+      }
       if (newVal.length === carts.value.data.length) {
         isChecked.value = true;
       } else {
         isChecked.value = false;
       }
-      updataSum();
+
+      await updataSum();
+      // await getCarts()
     });
 
+    //更新sum
     const updataSum = () => {
       let s = 0;
       checked.value.map((item) => {
         s += item.num * item.goods.price;
       });
       sum.value = s;
-      console.log(sum.value);
     };
 
     onMounted(async () => {
-      getCarts();
+      await getCarts();
+      //初始默认选中
+      if (carts.value.data.length) {
+        carts.value.data.map((item) => {
+          if (item.is_checked) {
+            checked.value.push(item);
+          }
+        });
+      }
+      if (checked.value.length === carts.value.data.length) {
+        isChecked.value = true;
+      } else {
+        isChecked.value = false;
+      }
+      //默认sum
+      await updataSum();
     });
+
+    //获取购物车信息
     const getCarts = async () => {
       carts.value = await Axios({ key: "getCarts" }, { include: "goods" });
       carts.value = carts.value.data;
+      // updataSum()
       console.log(carts);
     };
 
@@ -135,6 +169,15 @@ export default {
       Toast.clear();
       Toast("删除成功");
     };
+    const router = useRouter();
+
+    const onSubmit = () => {
+      if (checked.value.length) {
+        router.push("/preview");
+      } else {
+        Toast("请选择商品");
+      }
+    };
 
     return {
       carts,
@@ -144,6 +187,8 @@ export default {
       sum,
       isChecked,
       upChecked,
+      isCheckedBox,
+      onSubmit,
     };
   },
 };

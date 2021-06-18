@@ -7,14 +7,17 @@
 
     <van-row v-for="(a, index) in address" :key="index">
       <van-col span="20">
-        <p>{{ a.name + " " + a.phone }}</p>
+        <p>
+          {{ a.name.substring(6) + " " + a.phone }}
+          <van-tag v-if="a.is_default" type="danger">默认</van-tag>
+        </p>
         <p>{{ a.province }} {{ a.city }} {{ a.county }} {{ a.address }}</p>
       </van-col>
       <van-col
         span="4"
         style="flex-direction: row-reverse; display: flex; align-items: center"
       >
-        <van-icon size="24" name="edit" />
+        <van-icon @click="handAddared(a.id)" size="24" name="edit" />
       </van-col>
     </van-row>
 
@@ -28,9 +31,11 @@
 import PageNav from "@/components/pageNav";
 import { Axios } from "../../utils/axios";
 import { onMounted, ref } from "vue";
+import { useRouter } from "vue-router";
 export default {
   components: { PageNav },
   setup() {
+    const router = useRouter();
     const address = ref([]);
 
     onMounted(() => {
@@ -40,8 +45,13 @@ export default {
       });
     });
 
+    const handAddared = (id) => {
+      router.push(`/addared?id=${id}`);
+    };
+
     return {
       address,
+      handAddared,
     };
   },
 };

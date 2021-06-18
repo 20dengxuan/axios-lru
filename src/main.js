@@ -23,11 +23,17 @@ import {
   SubmitBar,
   Divider,
   Radio,
+  Tag,
   Col,
   Row,
+  AddressEdit,
+  ContactCard,
 } from "vant";
 
 createApp(App)
+  .use(Tag)
+  .use(ContactCard)
+  .use(AddressEdit)
   .use(Col)
   .use(Row)
   .use(Radio)

@@ -15,7 +15,7 @@
     <router-link to="/"
       ><span>我的收藏</span><van-icon color="black" name="arrow"
     /></router-link>
-    <router-link to="/"
+    <router-link to="/order"
       ><span>我的订单</span><van-icon color="black" name="arrow"
     /></router-link>
     <router-link to="/"
