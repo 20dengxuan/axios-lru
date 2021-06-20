@@ -6,6 +6,9 @@ const routes = [
     path: "/",
     name: "Home",
     component: () => import("@/views/Home"),
+    meta: {
+      keepAlive: true,
+    },
   },
   {
     path: "/user",

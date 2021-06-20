@@ -64,10 +64,12 @@ const getLocalCahce = (key, type) => {
 };
 
 const Axios = async (config, params) => {
+  const token = getSessionStorage("token");
+  console.log(token);
   const key = config.key,
     cacheType = config.type;
-
-  const caches = getLocalCahce(key.toUpperCase(), cacheType);
+  const lruKey = config.key + JSON.stringify(params) + token;
+  const caches = getLocalCahce(lruKey.toUpperCase(), cacheType);
   if (caches) {
     return caches;
   }
@@ -75,7 +77,7 @@ const Axios = async (config, params) => {
   const result = await api(params)[key]();
 
   if (result) {
-    setLocalCahce(key.toUpperCase(), result, cacheType);
+    setLocalCahce(lruKey.toUpperCase(), result, cacheType);
   }
 
   return result;

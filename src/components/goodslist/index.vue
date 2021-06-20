@@ -14,6 +14,7 @@
         {{ i.title }}
       </div>
     </div>
+    <p v-if="loading_text">加载中....</p>
   </van-list>
 </template>
 
@@ -28,22 +29,25 @@ export default {
 
     const loading = ref(false);
     const finished = ref(false);
+    const loading_text = ref(false);
     const page = ref(0);
     const list = ref([]);
     //热销
     const sales = ref([]);
 
     const getList = async () => {
-      if (page.value > 3) {
+      if (page.value > 5) {
         finished.value = true;
         return;
       }
+      loading_text.value = true;
       sales.value = await Axios(
-        { key: "getIndex" },
+        { key: "getIndex", type: 2 },
         { page: page.value, sales: 1 }
       );
       console.log(sales);
       list.value = list.value.concat(sales.value.data.goods.data);
+      loading_text.value = false;
       loading.value = false;
     };
 
@@ -65,6 +69,7 @@ export default {
       onLoad,
       list,
       getdetail,
+      loading_text,
     };
   },
 };

@@ -46,6 +46,7 @@ export default {
     });
     //保存地址
     const onSave = async (content) => {
+      console.log(content);
       let name = content.areaCode + content.name;
       const datas = {
         name: name,
@@ -66,10 +67,10 @@ export default {
         );
         Toast("修改成功");
       } else {
-        const data = await Axios({ key: "addAddress" }, data);
+        console.log("hhhhh");
+        await Axios({ key: "addAddress" }, datas);
         Toast("添加成功");
       }
-
       router.go(-1);
     };
 

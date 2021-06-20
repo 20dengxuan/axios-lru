@@ -30,6 +30,10 @@
       button-text="生成订单"
       @submit="onSubmit"
     />
+
+    <van-popup v-model:show="show">
+      <img :src="payCode.data.qr_code_url" />
+    </van-popup>
   </div>
 </template>
 
@@ -46,6 +50,8 @@ export default {
     const router = useRouter();
     const preview = ref([]);
     const sum = ref(0);
+    const show = ref(false);
+    const payCode = ref([]);
     const currentContact = reactive({
       name: "",
       tel: "",
@@ -75,9 +81,26 @@ export default {
     const onSubmit = async () => {
       const order = await Axios(
         { key: "postOrder" },
-        { address_id: preview.value.address[0].id }
+        { address_id: preview.value.address[0]?.id }
       );
       console.log(order);
+      payCode.value = await Axios(
+        { key: "getPaycode" },
+        { order: order.data.id }
+      );
+      console.log(payCode);
+      show.value = true;
+
+      const timer = setInterval(() => {
+        Axios({ key: "getPayStatus" }, { order: order.data.id }).then((res) => {
+          console.log(res.data);
+          if (res.data === 2) {
+            console.log(res);
+            clearInterval(timer);
+            router.push("/order");
+          }
+        });
+      }, 2000);
     };
 
     return {
@@ -87,6 +110,8 @@ export default {
       currentContact,
       onAdd,
       sum,
+      show,
+      payCode,
     };
   },
 };

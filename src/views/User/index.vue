@@ -5,11 +5,11 @@
     </page-nav>
     <header>
       <div>
-        <img :src="getUser.value?.data?.avatar_url" alt="" />
+        <img :src="getUser.data?.avatar_url" alt="" />
       </div>
       <div>
-        <p>{{ getUser.value?.data?.name }}</p>
-        <p>{{ getUser.value?.data?.email }}</p>
+        <p>{{ getUser.data?.name }}</p>
+        <p>{{ getUser.data?.email }}</p>
       </div>
     </header>
     <router-link to="/"
@@ -38,7 +38,7 @@ import { Axios } from "../..//utils/axios";
 import PageNav from "@/components/pageNav";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
-import { onMounted, reactive } from "vue";
+import { ref } from "vue";
 export default {
   components: {
     PageNav,
@@ -47,11 +47,17 @@ export default {
     const router = useRouter();
     const store = useStore();
 
-    const getUser = reactive({});
-    onMounted(async () => {
-      getUser.value = await Axios({ key: "getUser" });
-      console.log(getUser.value);
+    const getUser = ref([]);
+
+    Axios({ key: "getUser", type: 2 }).then((res) => {
+      getUser.value = res;
+      console.log(res);
     });
+
+    // onMounted(async () => {
+    //   getUser.value = await Axios({ key: "getUser" });
+    //   console.log(getUser.value);
+    // });
     // getUser.value = toRefs(getUser)
 
     //退出登录
@@ -67,7 +73,7 @@ export default {
 
     return {
       logout,
-      getUser: getUser,
+      getUser,
     };
   },
 };

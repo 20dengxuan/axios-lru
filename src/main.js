@@ -4,6 +4,7 @@ import router from "./router";
 import store from "./store";
 
 import {
+  Popup,
   List,
   Tab,
   Tabs,
@@ -31,6 +32,7 @@ import {
 } from "vant";
 
 createApp(App)
+  .use(Popup)
   .use(Tag)
   .use(ContactCard)
   .use(AddressEdit)

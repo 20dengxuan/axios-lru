@@ -38,6 +38,10 @@ export default {
     PageNav,
     GoodsList,
   },
+  beforeRouteLeave(to, from, next) {
+    to.meta.keepAlive = true;
+    next(0);
+  },
   setup() {
     const slides = ref([]);
     const goods = ref([]);

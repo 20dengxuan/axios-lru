@@ -102,7 +102,6 @@ export default {
       }
 
       await updataSum();
-      // await getCarts()
     });
 
     //更新sum

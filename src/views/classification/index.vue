@@ -22,6 +22,10 @@ export default {
   components: {
     PageNav,
   },
+  beforeRouteLeave(to, from, next) {
+    to.meta.keepAlive = true;
+    next(0);
+  },
   setup() {
     const lists = ref([]);
 

@@ -59,4 +59,13 @@ export default (params) => ({
 
   //订单详情
   getOrderDetail: () => axios.get(`/api/orders/${params.order}`),
+
+  //获取二维码
+  getPaycode: () =>
+    axios.get(`/api/orders/${params.order}/pay`, {
+      params: { type: "aliyun" },
+    }),
+
+  //查询支付状态
+  getPayStatus: () => axios.get(`/api/orders/${params.order}/status`),
 });
